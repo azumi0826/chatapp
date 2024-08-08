@@ -8,6 +8,7 @@
  
 
 <!-- コンテンツ表示画面 -->
+<button id="out">ログアウト</button>
 
 <div>
     <div> 名前：<input type="text" id="uname"> </div>
@@ -36,6 +37,9 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js"; //firebaseに接続するための関数群を読み込み
     import { getDatabase, ref, push, set, onChildAdded, remove, onChildRemoved } 
     from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js"; //上のバージョンに合わせて更新
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } 
+    from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+
 
 
     // TODO: Add SDKs for Firebase products that you want to use
@@ -56,6 +60,21 @@
     const app = initializeApp(firebaseConfig); //上のオブジェクト変数を渡す
     const db  = getDatabase(app); //RealtimeDBに接続
     const dbRef = ref(db,"chat"); //RealtimeDB内の"chat"を使う
+
+    //googleauth用
+    const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    const auth = getAuth();
+    console.log(auth);
+    // onAuthStateChangedを使って認証状態の変化を監視 
+    onAuthStateChanged(auth, (user) => { if (user) { 
+      // ユーザーが認証されている場合
+    console.log('User is authenticated'); console.log('User ID: ', user.uid);
+     // ユーザーのUIDを取得 
+    console.log('User email: ', user.email); // ユーザーのメールアドレスを取得
+     } else { // ユーザーが認証されていない場合 
+    console.log('User is not authenticated'); } });
+
 
     // データ送信
     $("#send").on("click",function(){
@@ -82,6 +101,29 @@
             $('#output').scrollTop($('#output')[0].scrollHeight);
 
     });
+
+    const user = firebase.auth().currentUser; if (user) { console.log('User is authenticated'); } else { console.log('User is not authenticated'); }
+
+//Logout処理
+$("#out").on("click", function () {
+    // signInWithRedirect(auth, provider);
+    signOut(auth).then(() => {
+        // Sign-out successful.
+        _redirect();
+    }).catch((error) => {
+        // An error happened.
+        console.error(error);
+    });
+});
+
+
+//###############################################
+//Login画面へリダイレクト(関数作成)
+//###############################################
+function _redirect(){
+    location.href="login.html";
+}
+
 
  
   </script>
