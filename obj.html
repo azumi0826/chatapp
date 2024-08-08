@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // グローバル変数は一度しか使えないので、中に入れちゃえば
+        const personal1 ={
+            name:"azu",
+            email:"test@example",
+            age:20        
+        };
+
+        console.log(personal1.name);
+
+        
+        const personal2 = {
+            name:"Yamazaki",
+            date:"2014-08-06 HH:ii:ss",
+            email:"test@example.com",
+            age:20,
+            sum:function(){
+                alert("sum");
+            }
+        };
+        personal2.sum();
+            
+    </script>
+    
+</body>
+</html>
