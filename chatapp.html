@@ -21,7 +21,7 @@
 <div class="chatararea">
     <div> 名前：<input type="text" id="unameinput" readonly> </div>
     <div>
-        <textarea id="text" cols="30" rows="10"></textarea>
+        <textarea id="text" cols="30" rows="10" placeholder="テキストを入力してください"></textarea>
         <button id="send">送信</button>
     </div>
     <div id="output"></div> 
@@ -119,17 +119,23 @@ onAuthStateChanged(auth, (user) => {
         });
 
     
-       // データ受信
+       // データ受信 新しいメッセージ追加時に呼び出される関数
         onChildAdded(dbRef,function(data){
         const msg = data.val(); //object変数で受け取る
         const key = data.key; //このデータのユニークIDを取得→更新と削除ができる
-        let h = '<p>';
-            h += msg.uname;
-            h += '<br>';
-            h += msg.text;
-            h += '</p>';
-            $("#output").append(h); //#outputの最後に追加
+        const currentuser = msg.uname === $("#unameinput").val(); //現在のユーザーのメッセージかどうかを判断するフラグを作成
+      //現在のユーザーのメッセージの場合、'self'クラスを追加
+        let h = `
+    <div class="chat-message ${currentuser ? 'self' : ''}"> 
+        <div class="chat-content">
+            <div class="chat-username">${msg.uname}</div>
+            <div class="chat-text">${msg.text}</div>
+        </div>
+    </div>
+    `;
 
+
+            $("#output").append(h); //#outputの最後に追加
             $('#output').scrollTop($('#output')[0].scrollHeight);
 
          });
