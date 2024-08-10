@@ -3,21 +3,28 @@
 <head>
 <meta charset="utf-8">
 <title>Firebase:v9:Chatアプリ</title>
+<link rel="stylesheet" href="/CSS/sample.css">
 </head>
 <body>
 
 <!-- コンテンツ表示画面 -->
+<div class="container">
+    <button id="out">ログアウト</button>
+    <div id="userinfo">
+    ログイン情報<span id="uname"></span><br>
+     <img src="" id="prof">
+    </div>
 
-<button id="out">ログアウト</button>
+</div>
 
-<div>
-    <div> 名前：<input type="text" id="uname"> </div>
+
+<div class="chatararea">
+    <div> 名前：<input type="text" id="unameinput" readonly> </div>
     <div>
         <textarea id="text" cols="30" rows="10"></textarea>
         <button id="send">送信</button>
     </div>
-    <div id="output" style="overflow:auto;height:300px; border:1px solid red;"></div> 
-
+    <div id="output"></div> 
 </div>
 <!--/ コンテンツ表示画面 -->
 
@@ -90,6 +97,8 @@ onAuthStateChanged(auth, (user) => {
                 //Login情報取得
                 $("#uname").text(profile.displayName);
                 $("#prof").attr("src",profile.photoURL);
+                $("#unameinput").val(profile.displayName);
+
                 // console.log("Sign-in provider: " + profile.providerId);
                 // console.log("Provider-specific UID: " + profile.uid);
                 // console.log("Email: " + profile.email);
@@ -101,7 +110,7 @@ onAuthStateChanged(auth, (user) => {
        // データ送信
        $("#send").on("click",function(){
         const msg = {
-            uname: $("#uname").val(),
+            uname: $("#unameinput").val(), //ログイン情報から引っ張ったユーザー名
             text:  $("#text").val()
         };
         // console.log(msg);
