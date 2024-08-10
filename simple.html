@@ -59,7 +59,6 @@
     // Initialize Firebase
     const app = initializeApp(firebaseConfig); //上のオブジェクト変数を渡す
     const db  = getDatabase(app); //RealtimeDBに接続
-    const dbRef = ref(db,"chat"); //RealtimeDB内の"chat"を使う
 
     //googleauth用
     const provider = new GoogleAuthProvider();
@@ -76,6 +75,29 @@
     console.log('User is not authenticated'); } });
 
 
+    
+//###############################################
+//Loginしていれば処理します
+//###############################################
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        const uid = user.uid;
+    const dbRef = ref(db, 'users/' + uid + "/chat"); //RealtimeDB内の"chat"を使う
+
+        //ユーザー情報取得できます
+        if (user !== null) {
+            user.providerData.forEach((profile) => {
+                //Login情報取得
+                $("#uname").text(profile.displayName);
+                $("#prof").attr("src",profile.photoURL);
+                // console.log("Sign-in provider: " + profile.providerId);
+                // console.log("Provider-specific UID: " + profile.uid);
+                // console.log("Email: " + profile.email);
+                // console.log("Photo URL: " + profile.photoURL);
+            });
+            $("#status").fadeOut(500);
+        }
+
     // データ送信
     $("#send").on("click",function(){
         const msg = {
@@ -87,8 +109,9 @@
         set(newPostRef, msg);
     });
 
+    
   // データ受信
-  onChildAdded(dbRef,function(data){
+    onChildAdded(dbRef,function(data){
         const msg = data.val(); //object変数で受け取る
         const key = data.key; //このデータのユニークIDを取得→更新と削除ができる
         let h = '<p>';
@@ -102,7 +125,18 @@
 
     });
 
-    const user = firebase.auth().currentUser; if (user) { console.log('User is authenticated'); } else { console.log('User is not authenticated'); }
+    } else {
+        _redirect();  // User is signed out
+    }
+});
+
+
+
+
+
+
+
+
 
 //Logout処理
 $("#out").on("click", function () {

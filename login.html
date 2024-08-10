@@ -34,13 +34,15 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChang
 //FirebaseConfig [ KEYを取得して設定！！ ]
 //###############################################
 const firebaseConfig = {
-      apiKey: "AIzaSyC4SK3j_ZRfTfxPExfz5jEaiH6dV7DoO5A",
-      authDomain: "gsdemo-1a797.firebaseapp.com",
-      projectId: "gsdemo-1a797",
-      storageBucket: "gsdemo-1a797.appspot.com",
-      messagingSenderId: "175500278181",
-      appId: "1:175500278181:web:1fd44e94a0198f4798904c"
+    apiKey: "AIzaSyCRxTH20AtJcKJ6bs67bqj8HREZ6DRe6eA",
+    authDomain: "chatapp-545bb.firebaseapp.com",
+    databaseURL: "https://chatapp-545bb-default-rtdb.firebaseio.com",
+    projectId: "chatapp-545bb",
+    storageBucket: "chatapp-545bb.appspot.com",
+    messagingSenderId: "294518110565",
+    appId: "1:294518110565:web:9b4933cfe85c2859dac98c"
 };
+
 const app = initializeApp(firebaseConfig);
 
 
@@ -60,7 +62,7 @@ $("#login").on("click",function(){
     // firebaseが用意している関数
     signInWithPopup(auth, provider).then((result) => {
         //Login後のページ遷移
-        location.href="simple.html";  
+        location.href="chatapp.html";  
     }).catch((error) => {
         // Handle Errors here.
         const errorCode = error.code;
